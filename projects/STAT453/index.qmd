@@ -1,0 +1,22 @@
+---
+title: "Random Survival Forest with an Application to Employee Attrition"
+description: ""
+image: STAT453.png
+image-alt: quizgrader logo
+categories:
+  - Research
+  - Survival Analysis
+about:
+  template: solana
+  image: STAT453.png
+---
+
+				
+
+In this project, we intended to predict the number of years an employee could work in IBM with random survival forest incorporated. Specifically, we analyzed the underlying factors that could contribute to our prediction on the number of years an employee could work at IBM. Since there are many categorical variables in the data set, we believe Random Survival Forest is a fittest model for analysis. Also, we compared the performance of our Random Survival Forest with AFT models and Cox PH models.
+
+				
+			
+		
+
+	

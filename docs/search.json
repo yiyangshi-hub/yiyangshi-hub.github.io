@@ -1,0 +1,107 @@
+[
+  {
+    "objectID": "posts/textmining/index.html",
+    "href": "posts/textmining/index.html",
+    "title": "Text Mining Learning Guide",
+    "section": "",
+    "text": "tidy text analysis (why do we want to do this?)\nthe package (gutenbergr and what is it)\ndifferent lexicons\nsentiment analysis\nreminder about joins"
+  },
+  {
+    "objectID": "posts/textmining/index.html#resources",
+    "href": "posts/textmining/index.html#resources",
+    "title": "Text Mining Learning Guide",
+    "section": "Resources",
+    "text": "Resources\n[Textbook on tidy text]https://www.tidytextmining.com/index.html\n[Sentiment Analysis and Tidy Tuesday]https://juliasilge.com/blog/animal-crossing/"
+  },
+  {
+    "objectID": "posts/textmining/index.html#the-tidy-text-format-document-term-matrixdtm",
+    "href": "posts/textmining/index.html#the-tidy-text-format-document-term-matrixdtm",
+    "title": "Text Mining Learning Guide",
+    "section": "The tidy text format & Document-Term Matrix(DTM)",
+    "text": "The tidy text format & Document-Term Matrix(DTM)\n\nAccording to the “Text Mining with R” textbook, the tidy text format is a table with one-token-per-row. This means that:\n\nEach variable is a column\nEach observation is a row\nEach type of observation unit is a table Therefore, a token is a meaningful unit of text, like a word, that we as data scientists are interested in analyzing. For tidy text mining, we may want to do a process called tokenization which splits words into tokens and then allows us to normally analyze by word.\n\nIn chapter 5 of “Text Mining with R”, DTM is one of the most common structure that text mining work with, where\n\nEach row represents a document (book or article)\nEach column represents one term.\nEach value (typically) contains the number of appearances of that term in that document.\n\n\nSince DTM objects and and tidy data frames are two incompactible objects, we cannot use tidy tools to analyze a DTM object. Tidytext package provides two functions that convert between these two formats:\n\ntidy() turns a DTM to a tidy dataframe.\ncast() turns a tidy one term per row dataframe to a matrix.\n\n\n# DTM\n# Install the package AssociatedPress before you run this code chunk\ndata(\"AssociatedPress\", package = \"topicmodels\")\n\n# tidying a DTM\nap_td <- tidy(AssociatedPress)\nap_td\n\n# A tibble: 302,031 × 3\n   document term       count\n      <int> <chr>      <dbl>\n 1        1 adding         1\n 2        1 adult          2\n 3        1 ago            1\n 4        1 alcohol        1\n 5        1 allegedly      1\n 6        1 allen          1\n 7        1 apparently     2\n 8        1 appeared       1\n 9        1 arrested       1\n10        1 assault        1\n# … with 302,021 more rows\n\n# joining tidy dataframe with sentiments dataframe\nap_sentiments <- ap_td %>% \n  inner_join(get_sentiments(\"bing\"), by = c(term = \"word\"))\n\n# Here is an example from the \"Text Mining with R\"\nap_sentiments %>% \n  count(sentiment, term, wt = count) %>% \n  ungroup() %>% \n  filter(n > 200) %>% \n  mutate(m = ifelse(sentiment == \"positive\", n, -n)) %>% \n  mutate(term = reorder(term, m)) %>% \n  ggplot(aes(x = m, y = term, fill = sentiment)) +\n  geom_col() +\n  labs(x = \"Contribution to Sentiment\", y = \"\")\n\n\n\n\n\n# casting a tidy dataframe\nap_td %>% \n  cast_dtm(document, term, count)\n\n<<DocumentTermMatrix (documents: 2246, terms: 10473)>>\nNon-/sparse entries: 302031/23220327\nSparsity           : 99%\nMaximal term length: 18\nWeighting          : term frequency (tf)"
+  },
+  {
+    "objectID": "posts/textmining/index.html#accessing-the-jane-austin-books",
+    "href": "posts/textmining/index.html#accessing-the-jane-austin-books",
+    "title": "Text Mining Learning Guide",
+    "section": "Accessing the Jane Austin Books",
+    "text": "Accessing the Jane Austin Books\n\noriginal_books <- austen_books() %>%\n  group_by(book) %>%\n  mutate(linenumber = row_number(),\n         chapter = cumsum(str_detect(text, \n                                     regex(\"^chapter [\\\\divxlc]\",\n                                           ignore_case = TRUE)))) %>%\n  ungroup()\n\noriginal_books\n\n# A tibble: 73,422 × 4\n   text                    book                linenumber chapter\n   <chr>                   <fct>                    <int>   <int>\n 1 \"SENSE AND SENSIBILITY\" Sense & Sensibility          1       0\n 2 \"\"                      Sense & Sensibility          2       0\n 3 \"by Jane Austen\"        Sense & Sensibility          3       0\n 4 \"\"                      Sense & Sensibility          4       0\n 5 \"(1811)\"                Sense & Sensibility          5       0\n 6 \"\"                      Sense & Sensibility          6       0\n 7 \"\"                      Sense & Sensibility          7       0\n 8 \"\"                      Sense & Sensibility          8       0\n 9 \"\"                      Sense & Sensibility          9       0\n10 \"CHAPTER 1\"             Sense & Sensibility         10       1\n# … with 73,412 more rows\n\n\nNow, to work with the tidy dataset we just created, we need to restructure it into a one-token-per-row format which leads us to our unnest_tokens function\n\ntidy_books <- original_books %>%\n  unnest_tokens(word, text)\n\nThe unnest_tokens uses the tokenizers package to separate each line of text in the original data frame into tokens. (More on different tyoes of tokenizing later)\nNow that our data is in a one-word-per-row format, we can use tidy tools (like dplyr)."
+  },
+  {
+    "objectID": "posts/textmining/index.html#removing-words",
+    "href": "posts/textmining/index.html#removing-words",
+    "title": "Text Mining Learning Guide",
+    "section": "Removing Words",
+    "text": "Removing Words\nWe can use the tidytext dataset stop_words with an anti_join to remove common English words like “the”, “of”, and “to” which potentially not be fruitful in a sentiment analysis context.\n\ntidy_books <- tidy_books %>%\n  anti_join(stop_words)\n\nJoining, by = \"word\""
+  },
+  {
+    "objectID": "posts/textmining/index.html#practice",
+    "href": "posts/textmining/index.html#practice",
+    "title": "Text Mining Learning Guide",
+    "section": "Practice",
+    "text": "Practice\n\nFind the most common words in all the tidy_books books as a whole. Create a visualization via ggplot to show the most common words in Jane Austen books.\n\n\ntidy_books\n\n# A tibble: 217,609 × 4\n   book                linenumber chapter word       \n   <fct>                    <int>   <int> <chr>      \n 1 Sense & Sensibility          1       0 sense      \n 2 Sense & Sensibility          1       0 sensibility\n 3 Sense & Sensibility          3       0 jane       \n 4 Sense & Sensibility          3       0 austen     \n 5 Sense & Sensibility          5       0 1811       \n 6 Sense & Sensibility         10       1 chapter    \n 7 Sense & Sensibility         10       1 1          \n 8 Sense & Sensibility         13       1 family     \n 9 Sense & Sensibility         13       1 dashwood   \n10 Sense & Sensibility         13       1 settled    \n# … with 217,599 more rows"
+  },
+  {
+    "objectID": "posts/textmining/index.html#practice-1",
+    "href": "posts/textmining/index.html#practice-1",
+    "title": "Text Mining Learning Guide",
+    "section": "Practice",
+    "text": "Practice\n\nTo do: Pepare the gutenberg dataset for the Bronte sisters for sentiment analysis (hint: think unnest_tokens and anti_join). From there, how would we find the the most common words in the novels?\n\n\nbronte <- gutenberg_download(c(1260, 768, 969, 9182, 767))\n\n## What would we insert in the in the parentheses?\nbronte %>%\n  unnest_tokens(???, ???) %>%\n  anti_join(????)\n\n## Now, use previous examples to find the most common words\n\nError: <text>:5:20: unexpected ','\n4: bronte %>%\n5:   unnest_tokens(???,\n                      ^"
+  },
+  {
+    "objectID": "posts/textmining/index.html#section-practice",
+    "href": "posts/textmining/index.html#section-practice",
+    "title": "Text Mining Learning Guide",
+    "section": "Section Practice",
+    "text": "Section Practice\nSo, how do we think we can calculate the frequency of each word for the works of Jane Austin and the Bronte sisters? How would we graph this?\n\nfrequency <- bind_rows(mutate (bronte, author = \n\"Bronte Sister\"),\nmutate(tidy_books, author = \"Jane Austen\"))\n\nError in mutate(bronte, author = \"Bronte Sister\"): object 'bronte' not found\n\n ## Can you find a way to use a regx here?\n\nHow would we plot this (hint: use ggplot)?\n\n\n\nWe can also run correlation tests, which allows us to quantify how similar and different these sets of word frequencies are.\nLet’s run a Pearson’s correlation test between the Bronte sisters and Jane Austins’ works.\n\ncor.test(data = frequency[frequency$author == \"Brontë Sisters\",],\n         ~ proportion + `Jane Austen`)"
+  },
+  {
+    "objectID": "posts/textmining/index.html#practice-2",
+    "href": "posts/textmining/index.html#practice-2",
+    "title": "Text Mining Learning Guide",
+    "section": "Practice",
+    "text": "Practice\nWhat does this information tell you?\n\n\n\n\nANSWER:\n\n\n\n\nSentiment Analysis with tidy data\nSo what is sentiment analysis? Sentiment Analysis allows us to analyze the emotion in text programmatically. one of the more common ways to do this is to consider the text as a combination of its individual words and the sentiment content of the whole text as the sum of the sentiment content of the individual words.\nHow are sentiment lexicons created and validated? They are constructed either via crowdsourcing or by an individual which they was validated using crowdsourcing, restaurant or movie reviews, or Twitter data.\nThere are a few different lexicon databases that can be used to do sentiment analysis (read more here <>) but for this we will use the nrc lexicon.\n\nget_sentiments(\"nrc\")\n\n# A tibble: 13,872 × 2\n   word        sentiment\n   <chr>       <chr>    \n 1 abacus      trust    \n 2 abandon     fear     \n 3 abandon     negative \n 4 abandon     sadness  \n 5 abandoned   anger    \n 6 abandoned   fear     \n 7 abandoned   negative \n 8 abandoned   sadness  \n 9 abandonment anger    \n10 abandonment fear     \n# … with 13,862 more rows\n\n\nNOTE: THIS WILL TAKE A WHILE TO DOWNLOAD\nThe nrc lexicon works by giving a list of English words and then giving their association to eight basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and two sentiments (negative and positive). The annotations for the lexicon is collected manually through crowd sourcing.\nTo explore more about the nrc lexicon: https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm#:~:text=The%20NRC%20Emotion%20Lexicon%20is,were%20manually%20done%20by%20crowdsourcing.\nAs shown below, once we add new variables and organize the book so each word has a distinct row, we want to use an inner_join to find the words in common in the book Emma with the “joy” words (or nrc_join dataset) in the nrc lexicon.\nLet’s try an example: What are the most common joy words in the book Emma?\n\ntidy_books <- austen_books() %>%\n  group_by(book) %>%\n  mutate(\n    linenumber = row_number(),\n    chapter = cumsum(str_detect(text, \n                                regex(\"^chapter [\\\\divxlc]\", \n                                      ignore_case = TRUE)))) %>%\n  ungroup() %>%\n  unnest_tokens(word, text)\n\nnrc_joy <- get_sentiments(\"nrc\") %>% \n  filter(sentiment == \"joy\")\n\ntidy_books %>%\n  filter(book == \"Emma\") %>%\n  inner_join(nrc_joy) %>%\n  count(word, sort = TRUE)\n\nJoining, by = \"word\"\n\n\n# A tibble: 301 × 2\n   word          n\n   <chr>     <int>\n 1 good        359\n 2 friend      166\n 3 hope        143\n 4 happy       125\n 5 love        117\n 6 deal         92\n 7 found        92\n 8 present      89\n 9 kind         82\n10 happiness    76\n# … with 291 more rows"
+  },
+  {
+    "objectID": "projects/STAT452/index.html",
+    "href": "projects/STAT452/index.html",
+    "title": "BikeShare DC Ridership Behavior",
+    "section": "",
+    "text": "Our project discuss the influence and efficiency of the bike sharing system in DC by evaluating Capital Bikeshare stations’ popularity with a longitudinal approach in 2021. We utilized a generalized estimating equation (GEE) to model the average daily rides per station by incorporating weather information, demographic characteristics, and spatial elements under the assumption of an exchangeable working correlation structure.\nWe conclude that the temperature and distance to the Washington Monument are negatively correlated. At the same time, low humidity, low wind speeds, and the proportion of White residents per census tract are positively correlated with the number of daily riders."
+  },
+  {
+    "objectID": "projects/STAT453/index.html",
+    "href": "projects/STAT453/index.html",
+    "title": "Random Survival Forest with an Application to Employee Attrition",
+    "section": "",
+    "text": "In this project, we intended to predict the number of years an employee could work in IBM with random survival forest incorporated. Specifically, we analyzed the underlying factors that could contribute to our prediction on the number of years an employee could work at IBM. Since there are many categorical variables in the data set, we believe Random Survival Forest is a fittest model for analysis. Also, we compared the performance of our Random Survival Forest with AFT models and Cox PH models."
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Projects",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\n\n\nResearch\n\n\nSurvival Analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nResearch\n\n\nBayesian\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nResearch\n\n\nCorrelated Data\n\n\n\nA project investigating Capital Bikeshare\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Yiyang Shi",
+    "section": "",
+    "text": "he/him/his\nSenior Student at Macalester College\nRising Graduate Student of the University of Michigan Ann Harbor\n\n\n\nMacalester College | St. Paul MN\nB.A. in Applied Math & Statistics | Sep 2019 - May 2023"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "posts.html",
+    "href": "posts.html",
+    "title": "Posts",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\n\n\n\n\n\n\nR\n\n\nText Mining\n\n\nSentiment Analysis\n\n\n\n\nA learning guide of text mining with the dataset in RStudio\n\n\n\n\n\n\nMar 1, 2023\n\n\nYiyang Shi, Cecelia Kaufmann, Tam Nguyen\n\n\n\n\n\n\nNo matching items"
+  }
+]

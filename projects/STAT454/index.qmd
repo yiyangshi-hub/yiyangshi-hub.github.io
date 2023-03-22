@@ -1,0 +1,12 @@
+---
+title: "Hotel Cancellation Prediction"
+description: ""
+image: STAT454.png
+image-alt: quizgrader logo
+categories:
+  - Research
+  - Bayesian
+about:
+  template: solana
+  image: STAT454.png
+---

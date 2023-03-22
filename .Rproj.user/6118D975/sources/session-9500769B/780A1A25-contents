@@ -1,0 +1,51 @@
+library(jsonlite)
+library(tidyverse)
+library(lubridate)
+
+key <- "&api-key=9f51672b-1066-4b6f-a6ca-4066419d6f96"
+url <- "https://content.guardianapis.com/search?q=trump&from-date=2021-01-01&page=1"
+req <- fromJSON(paste0(url, key))
+articles <- req$response$docs
+link = "https://content.guardianapis.com/search?q=trump"
+
+
+dates <- ymd('20210101') + 0:10
+d <- format(dates,'%Y-%m-%d')
+
+totalarticles <- NULL
+
+
+for(i in d){
+  p = 1
+  while(p < 10){
+    url = paste0(link, '&from-date=',i ,'&page=',p)
+    req <- fromJSON(paste0(url, key))
+    articles <- req$response$docs
+    totalarticles <- bind_rows(totalarticles,articles)
+    if(isTRUE(nrow(articles)) && nrow(articles) != 10){ break }
+    else{p = p+1}
+    Sys.sleep(6)
+  }
+}
+
+# guardian_url <- “https://content.guardianapis.com/search”
+# guardian_url <- param_set(guardian_url, “q”, url_encode(“2020 US election”))
+# guardian_url <- param_set(guardian_url, “api-key”, url_encode(guardian_key))
+# dates <- ymd(‘20200101’) + 0:29
+# d <- format(dates,‘%Y-%m-%d’)
+# df_guardian <- NULL
+# for(i in d){
+#   p = 1
+#   while(p < 10){
+#     URL_Guardian = paste0(guardian_url, ‘&from-date=‘,i, “&from-date=“,i ,‘&page=’,p)
+#     req_guardian <- fromJSON(URL_Guardian)
+#     articles_guardian <- req_guardian$response$results
+#     df_guardian <- bind_rows(df_guardian,articles_guardian)
+#     if(isTRUE(nrow(articles_guardian)) && nrow(articles_guardian) != 10){break}
+#     else{p = p+1}
+#     Sys.sleep(6)
+#   }
+# }
+
+
+

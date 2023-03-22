@@ -1,0 +1,21 @@
+---
+title: "BikeShare DC Ridership Behavior"
+description: "A project investigating Capital Bikeshare"
+image: STAT452.png
+image-alt: quizgrader logo
+categories:
+  - Research
+  - Correlated Data
+about:
+  template: solana
+  image: STAT452.png
+---
+
+The increasing popularity of bike sharing solves the last-mile problem for the commuters in cities by deploying bike sharing stations at bus stops, metro stations, and libraries. Increasing gas prices, maintenance costs, and traffic jams are obstacles for commuters that travel by car. Bike sharing services are a cost-effective and eco-friendly alternative. 
+
+Our project discuss the influence and efficiency of the bike sharing system in DC by evaluating Capital Bikeshare stations' popularity with a longitudinal approach in 2021. We utilized a generalized estimating equation (GEE) to model the average daily rides per station by incorporating weather information, demographic characteristics, and spatial elements under the assumption of an exchangeable working correlation structure. 
+
+We conclude that the temperature and distance to the Washington Monument are negatively correlated. At the same time, low humidity, low wind speeds, and the proportion of White residents per census tract are positively correlated with the number of daily riders.
+
+\
+\

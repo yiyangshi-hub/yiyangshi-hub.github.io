@@ -1,0 +1,28 @@
+{
+    "id": "6694434B",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1679506780838.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "id": "d72427ec1882460e80ba36907975a089",
+        "name": "req",
+        "title": "req",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 0,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1679506780838,
+    "read_only": false,
+    "read_only_alternatives": []
+}

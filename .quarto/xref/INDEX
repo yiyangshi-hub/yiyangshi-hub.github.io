@@ -4,5 +4,23 @@
   },
   "about.qmd": {
     "about.html": "cf7cd852"
+  },
+  "posts/textmining/index.qmd": {
+    "index.html": "a7370976"
+  },
+  "projects/STAT452/index.qmd": {
+    "index.html": "ec1e39cf"
+  },
+  "projects/STAT453/index.qmd": {
+    "index.html": "b9decfd1"
+  },
+  "projects/STAT454/index.qmd": {
+    "index.html": "a3b2fb0b"
+  },
+  "projects.qmd": {
+    "projects.html": "15ab85b1"
+  },
+  "posts.qmd": {
+    "posts.html": "0c44c5bb"
   }
 }

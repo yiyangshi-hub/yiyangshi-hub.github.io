@@ -1,7 +1,7 @@
 {
-  "hash": "ae307428484d746d0cd5d5d77c07e790",
+  "hash": "ae1168457184ac9fdd9cefaafa38925b",
   "result": {
-    "markdown": "---\ntitle: \"yiyangshi-hub.github.io\"\n---\n\n\nThis is a Quarto website.\n\nTo learn more about Quarto websites visit <https://quarto.org/docs/websites>.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n",
+    "markdown": "---\ntitle: \"yiyangshi\"\nabout:\n  id: intro-heading\n  template: trestles\n  image: images/profilepic.jpg\n  links:\n    - icon: instagram\n      href: https://www.instagram.com/yiyangshi0910/\n    - icon: github\n      href: https://github.com/yiyangshi-hub\n---\n\n\nThis is a Quarto website.\n\nTo learn more about Quarto websites visit <https://quarto.org/docs/websites>.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"
