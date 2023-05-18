@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -34,10 +34,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -79,13 +79,16 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
+    <a class="nav-link active" href="./index.html" aria-current="page">
+ <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./projects.html">Projects</a>
+    <a class="nav-link" href="./projects.html">
+ <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./posts.html">Posts</a>
+    <a class="nav-link" href="./posts.html">
+ <span class="menu-text">Posts</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -105,11 +108,11 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-about-trestles">
   <div class="about-entity">
-    <img src="images/profilepic.jpg" class="about-image
-  rounded " style="width: 20em;">
+    <img src="images/yiyang.jpg" class="about-image
+  round " style="height: 20em; width: 20em;">
     <div class="about-links">
-  <a href="https://www.instagram.com/yiyangshi0910/" class="about-link">
-    <i class="bi bi-instagram"></i>
+  <a href="https://www.linkedin.com/in/易扬-时-7179161a2/" class="about-link">
+    <i class="bi bi-linkedin"></i>
      <span class="about-link-text"></span>
   </a>
   <a href="https://github.com/yiyangshi-hub" class="about-link">
@@ -122,8 +125,15 @@ ul.task-list li input[type="checkbox"] {
 <section id="yiyang-shi" class="level2">
 <h2 data-anchor-id="yiyang-shi">Yiyang Shi</h2>
 <p>he/him/his</p>
-<p>Senior Student at Macalester College</p>
-<p>Rising Graduate Student of the University of Michigan Ann Harbor</p>
+<p>Graduate Student at the University of Michigan Ann Harbor</p>
+<p>M.S. in Industrial and Operation Engineering | Aug 2023 - May 2025</p>
+</section>
+<section id="experience" class="level2">
+<h2 data-anchor-id="experience">Experience</h2>
+<p>Data Centers Intern<br> Jul 2022 - Dec 2022 | Convergint</p>
+<p>Teaching Assistant of Stat Machine Learning<br> Jan 2022 - May 2022 | Macalester College</p>
+<p>Databases Intern<br> May 2021 - Aug 2021 | International Institute of Minnesota</p>
+<p>Teaching Assistant of Intro to Data Science<br> Jan 2021 - May 2021 | Macalester College</p>
 </section>
 <section id="education" class="level2">
 <h2 data-anchor-id="education">Education</h2>
@@ -133,9 +143,15 @@ ul.task-list li input[type="checkbox"] {
 </div></div>
 </div>
 
+<section id="biography" class="level3">
+<h3 data-anchor-id="biography">Biography</h3>
+<p>Always aiming to be two years ahead of my peers' understanding, I set the goal to familiarize myself with more advanced mathematical concepts ever since elementary school. Moreover, influenced by my father, I am fortunate enough to have access to technology soon after I could read, and since then, I have never doubted that I would devote my time to STEM.</p>
+<p>Intrigued by Statistics’ unique role in simplifying complex information to deliver effective solutions to solve real-life problems while I took the AP courses, I decided to major in Applied Mathematics &amp; Statistics. Thanks to my close connections with supporting professors in the tight community of Macalester College, I have built a solid academic foundation and explored different industries by completing multiple projects during my undergraduate study.</p>
+<p>Benefiting from the liberal arts education, I also realized the value of self-reflection and learned to examine issues from various angles, which helped me to form an introspective mindset to better find my roles in communities and creatively connect knowledge with its applications. Also, with the invaluable work experience I accumulated through internships, I now know that I want to start my career path as a professional in the field of operations research and analytics.</p>
 
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -172,7 +188,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -208,24 +241,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>

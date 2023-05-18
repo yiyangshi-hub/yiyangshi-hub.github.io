@@ -3,10 +3,12 @@ title: ""
 about:
   id: intro-heading
   template: trestles
-  image: images/profilepic.jpg
+  image-width: 20em
+  image-shape: round
+  image: images/yiyang.jpg
   links:
-    - icon: instagram
-      href: https://www.instagram.com/yiyangshi0910/
+    - icon: linkedin
+      href: https://www.linkedin.com/in/易扬-时-7179161a2/
     - icon: github
       href: https://github.com/yiyangshi-hub
 ---
@@ -16,9 +18,19 @@ about:
 
 he/him/his
 
-Senior Student at Macalester College
+Graduate Student at the University of Michigan Ann Harbor
 
-Rising Graduate Student of the University of Michigan Ann Harbor
+M.S. in Industrial and Operation Engineering \| Aug 2023 - May 2025
+
+## Experience
+
+Data Centers Intern<br> Jul 2022 - Dec 2022 \| Convergint
+
+Teaching Assistant of Stat Machine Learning<br> Jan 2022 - May 2022 \| Macalester College
+
+Databases Intern<br> May 2021 - Aug 2021 \| International Institute of Minnesota
+
+Teaching Assistant of Intro to Data Science<br> Jan 2021 - May 2021 \| Macalester College
 
 ## Education
 
@@ -26,3 +38,11 @@ Macalester College \| St. Paul MN<br>
 
 B.A. in Applied Math & Statistics \| Sep 2019 - May 2023
 :::
+
+### Biography
+
+Always aiming to be two years ahead of my peers\' understanding, I set the goal to familiarize myself with more advanced mathematical concepts ever since elementary school. Moreover, influenced by my father, I am fortunate enough to have access to technology soon after I could read, and since then, I have never doubted that I would devote my time to STEM.
+
+Intrigued by Statistics' unique role in simplifying complex information to deliver effective solutions to solve real-life problems while I took the AP courses, I decided to major in Applied Mathematics & Statistics. Thanks to my close connections with supporting professors in the tight community of Macalester College, I have built a solid academic foundation and explored different industries by completing multiple projects during my undergraduate study.
+
+Benefiting from the liberal arts education, I also realized the value of self-reflection and learned to examine issues from various angles, which helped me to form an introspective mindset to better find my roles in communities and creatively connect knowledge with its applications. Also, with the invaluable work experience I accumulated through internships, I now know that I want to start my career path as a professional in the field of operations research and analytics.

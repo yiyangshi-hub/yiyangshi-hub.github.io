@@ -2,6 +2,7 @@
   {
     "listing": "/projects.html",
     "items": [
+      "/projects/STAT 456/index.html",
       "/projects/STAT453/index.html",
       "/projects/STAT454/index.html",
       "/projects/STAT452/index.html"
@@ -10,6 +11,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/Sentiment Analysis/index.html",
       "/posts/textmining/index.html"
     ]
   }

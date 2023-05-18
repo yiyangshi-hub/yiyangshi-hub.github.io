@@ -27,38 +27,35 @@ library(igraph) #to create an igraph object
 library(ggraph) #to visualize the igraph object by turning it into ggraph with appropriate functions
 ```
 
-
 ## Background and Resources -- Cecelia
-+ tidy text analysis (why do we want to do this?)
-+ the package (gutenbergr and what is it)
-+ different lexicons
-+ sentiment analysis 
-+ reminder about joins
+
+-   tidy text analysis (why do we want to do this?)
+-   the package (gutenbergr and what is it)
+-   different lexicons
+-   sentiment analysis
+-   reminder about joins
 
 ## Resources
-[Textbook on tidy text]<https://www.tidytextmining.com/index.html>
 
-[Sentiment Analysis and Tidy Tuesday]<https://juliasilge.com/blog/animal-crossing/>
+\[Textbook on tidy text\]<https://www.tidytextmining.com/index.html>
+
+\[Sentiment Analysis and Tidy Tuesday\]<https://juliasilge.com/blog/animal-crossing/>
 
 ## The tidy text format & Document-Term Matrix(DTM)
 
-* According to the "Text Mining with R" textbook, the tidy text format is a table with one-token-per-row. This means that:
-  + Each variable is a column
-  + Each observation is a row
-  + Each type of observation unit is a table
-Therefore, a token is a meaningful unit of text, like a word, that we as data scientists are interested in analyzing. 
-For tidy text mining, we may want to do a process called tokenization which splits words into tokens and then allows us to normally analyze by word. 
-
-* In chapter 5 of "Text Mining with R", DTM is one of the most common structure that text mining work with, where
-  + Each row represents a document (book or article)
-  + Each column represents one term.
-  + Each value (typically) contains the number of appearances of that term in that document.
-
+-   According to the "Text Mining with R" textbook, the tidy text format is a table with one-token-per-row. This means that:
+    -   Each variable is a column
+    -   Each observation is a row
+    -   Each type of observation unit is a table Therefore, a token is a meaningful unit of text, like a word, that we as data scientists are interested in analyzing. For tidy text mining, we may want to do a process called tokenization which splits words into tokens and then allows us to normally analyze by word.
+-   In chapter 5 of "Text Mining with R", DTM is one of the most common structure that text mining work with, where
+    -   Each row represents a document (book or article)
+    -   Each column represents one term.
+    -   Each value (typically) contains the number of appearances of that term in that document.
 
 Since DTM objects and and tidy data frames are two incompactible objects, we cannot use tidy tools to analyze a DTM object. Tidytext package provides two functions that convert between these two formats:
 
-+ tidy() turns a DTM to a tidy dataframe.
-+ cast() turns a tidy one term per row dataframe to a matrix.
+-   tidy() turns a DTM to a tidy dataframe.
+-   cast() turns a tidy one term per row dataframe to a matrix.
 
 ```{r}
 # DTM
@@ -91,8 +88,8 @@ ap_td %>%
   cast_dtm(document, term, count)
 ```
 
-
 ## Accessing the Jane Austin Books
+
 ```{r}
 original_books <- austen_books() %>%
   group_by(book) %>%
@@ -114,11 +111,11 @@ tidy_books <- original_books %>%
 
 The unnest_tokens uses the tokenizers package to separate each line of text in the original data frame into tokens. (More on different tyoes of tokenizing later)
 
-
-Now that our data is in a one-word-per-row format, we can use tidy tools (like dplyr). 
+Now that our data is in a one-word-per-row format, we can use tidy tools (like dplyr).
 
 ## Removing Words
-We can use the tidytext dataset stop_words with an anti_join to remove common English words like "the", "of", and "to" which potentially not be fruitful in a sentiment analysis context. 
+
+We can use the tidytext dataset stop_words with an anti_join to remove common English words like "the", "of", and "to" which potentially not be fruitful in a sentiment analysis context.
 
 ```{r}
 tidy_books <- tidy_books %>%
@@ -126,22 +123,23 @@ tidy_books <- tidy_books %>%
 ```
 
 ## Practice
-1. Find the most common words in all the tidy_books books as a whole. Create a visualization via ggplot to show the most common words in Jane Austen books. 
+
+1.  Find the most common words in all the tidy_books books as a whole. Create a visualization via ggplot to show the most common words in Jane Austen books.
+
 ```{r}
 tidy_books
 
 ```
 
-
 # The gutenbergr package
 
 Another package we will be using for our sentiment analysis is the gutenbergr package, which can give us access to public domain works in the Project Gutenberg <https://www.gutenberg.org/> Collection. This is a huge package that gives us access to a large number of books and metadata around the books.
 
-
-Let's look at some of the Bronte sisters' works. 
+Let's look at some of the Bronte sisters' works.
 
 ## Practice
-2. To do: Pepare the gutenberg dataset for the Bronte sisters for sentiment analysis (hint: think unnest_tokens and anti_join). From there, how would we find the the most common words in the novels?
+
+2.  To do: Pepare the gutenberg dataset for the Bronte sisters for sentiment analysis (hint: think unnest_tokens and anti_join). From there, how would we find the the most common words in the novels?
 
 ```{r}
 bronte <- gutenberg_download(c(1260, 768, 969, 9182, 767))
@@ -157,7 +155,7 @@ bronte %>%
 
 ## Section Practice
 
-So, how do we think we can calculate the frequency of each word for the works of Jane Austin and the Bronte sisters? How would we graph this? 
+So, how do we think we can calculate the frequency of each word for the works of Jane Austin and the Bronte sisters? How would we graph this?
 
 ```{r}
 frequency <- bind_rows(mutate (bronte, author = 
@@ -167,16 +165,15 @@ mutate(tidy_books, author = "Jane Austen"))
  
 ```
 
-
 How would we plot this (hint: use ggplot)?
+
 ```{r}
 
 ```
 
-
 We can also run correlation tests, which allows us to quantify how similar and different these sets of word frequencies are.
 
-Let's run a Pearson's correlation test between the Bronte sisters and Jane Austins' works. 
+Let's run a Pearson's correlation test between the Bronte sisters and Jane Austins' works.
 
 ```{r eval=FALSE}
 cor.test(data = frequency[frequency$author == "Brontë Sisters",],
@@ -187,28 +184,27 @@ cor.test(data = frequency[frequency$author == "Brontë Sisters",],
 
 What does this information tell you?
 
->>>> ANSWER:
-
+> > > > ANSWER:
 
 Sentiment Analysis with tidy data
 
-So what is sentiment analysis? Sentiment Analysis allows us to analyze the emotion in text programmatically. one of the more common ways to do this is to consider the text as a combination of its individual words and the sentiment content of the whole text as the sum of the sentiment content of the individual words. 
+So what is sentiment analysis? Sentiment Analysis allows us to analyze the emotion in text programmatically. one of the more common ways to do this is to consider the text as a combination of its individual words and the sentiment content of the whole text as the sum of the sentiment content of the individual words.
 
-How are sentiment lexicons created and validated? They are constructed either via crowdsourcing or by an individual which they was validated using crowdsourcing, restaurant or movie reviews, or Twitter data. 
+How are sentiment lexicons created and validated? They are constructed either via crowdsourcing or by an individual which they was validated using crowdsourcing, restaurant or movie reviews, or Twitter data.
 
-There are a few different lexicon databases that can be used to do sentiment analysis (read more here <>) but for this we will use the nrc lexicon. 
+There are a few different lexicon databases that can be used to do sentiment analysis (read more here \<\>) but for this we will use the nrc lexicon.
 
 ```{r}
 get_sentiments("nrc")
 ```
+
 ***NOTE: THIS WILL TAKE A WHILE TO DOWNLOAD***
 
-The nrc lexicon works by giving a list of English words and then giving their association to eight basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and two sentiments (negative and positive). The annotations for the lexicon is collected manually through crowd sourcing. 
+The nrc lexicon works by giving a list of English words and then giving their association to eight basic emotions (anger, fear, anticipation, trust, surprise, sadness, joy, and disgust) and two sentiments (negative and positive). The annotations for the lexicon is collected manually through crowd sourcing.
 
 To explore more about the nrc lexicon: <https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm#:~:text=The%20NRC%20Emotion%20Lexicon%20is,were%20manually%20done%20by%20crowdsourcing.>
 
-
-As shown below, once we add new variables and organize the book so each word has a distinct row, we want to use an inner_join to find the words in common in the book Emma with the "joy" words (or nrc_join dataset) in the nrc lexicon. 
+As shown below, once we add new variables and organize the book so each word has a distinct row, we want to use an inner_join to find the words in common in the book Emma with the "joy" words (or nrc_join dataset) in the nrc lexicon.
 
 Let's try an example: What are the most common joy words in the book Emma?
 
@@ -233,7 +229,6 @@ tidy_books %>%
 
 ```
 
-
 # Practice: How many positive and negative words are in each of the sections of the book? Here is some starter code to help you out!
 
 ```{r eval=FALSE}
@@ -253,15 +248,11 @@ Now try and plot the results! Creat the graph however you think best fits the pr
 
 ```
 
-
-Practice: What are the most common positive and negative words? Use the nrc database and tidy_books. We will want to use an inner_join and a count(). 
-
-
+Practice: What are the most common positive and negative words? Use the nrc database and tidy_books. We will want to use an inner_join and a count().
 
 ```{r}
 
 ```
-
 
 Now, make a graph with this information
 
@@ -269,16 +260,12 @@ Now, make a graph with this information
 
 ```
 
-
 One cool thing with sentiment analysis is we customize our lists, like for example the word "miss" is coded as negative but can also be used as a title for a young, unmarried women in Jane Austin's works. We can use bind_rows() to solve this:
 
 ```{r}
 figure_custom_words <- bind_rows(tibble(word = c("miss"), lexicon = c("custom")),
                                  stop_words)
 ```
-
-
-
 
 #### Introduction to the tf-idf statistic - Tam
 
@@ -288,8 +275,6 @@ Question: When we look at a body of literature works, say J.K.Rowling's Harry Po
 
 problem: the most frequently used words in English tend to be `stopwords` like "the", "of" or "like", which generally are not that important except in some cases. Therefore, we need a better metric to reflect the true value of a word or phrase.
 
+`idf`: inverse document frequency, which is the natural log of the total number of documents divided by the number of documents containing the term we want to examine. The `idf` is a measure that penalizes commonly used words by decreasing their weights but rewarding less commonly used words by increasing their weights. Its formula is as follows
 
-`idf`: inverse document frequency, which is the natural log of the total number of documents divided by the number of documents containing the term we want to examine. The `idf` is a measure that penalizes commonly used words by decreasing their weights but rewarding less commonly used words by increasing their weights. Its formula is as follows 
-
-                
 $$idf(\textrm{term}) = \ln \left( \frac{n_{\textrm{documents}}}{n_{\textrm{documents containing term}}}\right)$$

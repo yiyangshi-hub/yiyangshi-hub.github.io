@@ -22,5 +22,11 @@
   },
   "posts.qmd": {
     "posts.html": "0c44c5bb"
+  },
+  "projects/STAT 456/index.qmd": {
+    "index.html": "7abfe2e0"
+  },
+  "posts/Sentiment Analysis/index.qmd": {
+    "index.html": "d6896152"
   }
 }

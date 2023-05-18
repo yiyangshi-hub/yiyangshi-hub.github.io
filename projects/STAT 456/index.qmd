@@ -1,0 +1,16 @@
+---
+title: "The 2020 Presidential Election: A Sentiment Analysis of News Media Coverage on Joe Biden and Donald Trump"
+image: STAT456.png
+image-alt: quizgrader logo
+categories:
+  - Text Mining
+  - Sentiment Analysis
+  - Web Scraping
+about:
+  template: solana
+  image: STAT456.png
+---
+
+This project aims to explore the connection between how the two main candidates in the 2020 U.S. presidential election, Joe Biden and Donald Trump were portrayed in the media via sentiment analysis. To do this, we used the AFINN lexicon to longitudinally explore trends over the span of 2 years, from 2020 to 2022 to see there were connections between specific events in the world or in the candidates lives and how the media portrayed the candidates. To explore this further, we picked a news source from within the United States, the New York Times and one from the U.K., the Guardian, to see if the trends differ domestically versus internationally.
+
+Here's the [link](https://github.com/yiyangshi-hub/STAT456) to the github repo

@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Yiyang Shi, Cecelia Kaufmann, Tam Nguyen">
+<meta name="dcterms.date" content="2023-03-01">
+<meta name="description" content="A Sentiment Analysis of News Media Coverage on Joe Biden and Donald Trump">
+
+<title>Yiyang Shi - The 2020 Presidential Election</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Yiyang Shi</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../projects.html">
+ <span class="menu-text">Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html">
+ <span class="menu-text">Posts</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-and-backgrounds" id="toc-introduction-and-backgrounds" class="nav-link active" data-scroll-target="#introduction-and-backgrounds">Introduction and Backgrounds</a>
+  <ul class="collapse">
+  <li><a href="#introduction-to-our-project" id="toc-introduction-to-our-project" class="nav-link" data-scroll-target="#introduction-to-our-project">Introduction to Our Project</a></li>
+  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions">Research Questions</a></li>
+  <li><a href="#motivations-to-our-research-questions" id="toc-motivations-to-our-research-questions" class="nav-link" data-scroll-target="#motivations-to-our-research-questions">Motivations to Our Research Questions</a></li>
+  <li><a href="#about-sentiment-analysis" id="toc-about-sentiment-analysis" class="nav-link" data-scroll-target="#about-sentiment-analysis">About Sentiment Analysis</a></li>
+  <li><a href="#lexicons-and-the-afinn-lexicon" id="toc-lexicons-and-the-afinn-lexicon" class="nav-link" data-scroll-target="#lexicons-and-the-afinn-lexicon">Lexicons and the “AFINN” lexicon</a></li>
+  <li><a href="#stop-words" id="toc-stop-words" class="nav-link" data-scroll-target="#stop-words">Stop Words</a></li>
+  <li><a href="#stemming-and-the-snowballc-package-porter-algorithm" id="toc-stemming-and-the-snowballc-package-porter-algorithm" class="nav-link" data-scroll-target="#stemming-and-the-snowballc-package-porter-algorithm">Stemming and the SnowballC package (Porter Algorithm)</a></li>
+  </ul></li>
+  <li><a href="#about-our-datasets" id="toc-about-our-datasets" class="nav-link" data-scroll-target="#about-our-datasets">About our Datasets</a></li>
+  <li><a href="#data-cleaning-for-new-york-times-biden-and-trump" id="toc-data-cleaning-for-new-york-times-biden-and-trump" class="nav-link" data-scroll-target="#data-cleaning-for-new-york-times-biden-and-trump">Data cleaning for New York Times (Biden and Trump)</a></li>
+  <li><a href="#visualizations-and-discussion" id="toc-visualizations-and-discussion" class="nav-link" data-scroll-target="#visualizations-and-discussion">Visualizations and Discussion</a>
+  <ul class="collapse">
+  <li><a href="#new-york-times" id="toc-new-york-times" class="nav-link" data-scroll-target="#new-york-times">New York Times</a>
+  <ul class="collapse">
+  <li><a href="#biden-new-york-times" id="toc-biden-new-york-times" class="nav-link" data-scroll-target="#biden-new-york-times">Biden New York Times</a></li>
+  <li><a href="#trump-new-york-times" id="toc-trump-new-york-times" class="nav-link" data-scroll-target="#trump-new-york-times">Trump New York Times</a></li>
+  <li><a href="#new-york-times-conclusions" id="toc-new-york-times-conclusions" class="nav-link" data-scroll-target="#new-york-times-conclusions">New York Times Conclusions</a></li>
+  </ul></li>
+  <li><a href="#guardian" id="toc-guardian" class="nav-link" data-scroll-target="#guardian">Guardian</a>
+  <ul class="collapse">
+  <li><a href="#biden-guardian" id="toc-biden-guardian" class="nav-link" data-scroll-target="#biden-guardian">Biden Guardian</a></li>
+  <li><a href="#trump-guardian" id="toc-trump-guardian" class="nav-link" data-scroll-target="#trump-guardian">Trump Guardian</a></li>
+  <li><a href="#guardian-conclusion" id="toc-guardian-conclusion" class="nav-link" data-scroll-target="#guardian-conclusion">Guardian Conclusion</a></li>
+  </ul></li>
+  <li><a href="#nyt-and-guardian-together" id="toc-nyt-and-guardian-together" class="nav-link" data-scroll-target="#nyt-and-guardian-together">NYT and Guardian together</a></li>
+  </ul></li>
+  <li><a href="#unanswered-questions-and-limitations" id="toc-unanswered-questions-and-limitations" class="nav-link" data-scroll-target="#unanswered-questions-and-limitations">Unanswered Questions and Limitations</a></li>
+  <li><a href="#final-conclusions" id="toc-final-conclusions" class="nav-link" data-scroll-target="#final-conclusions">Final Conclusions</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The 2020 Presidential Election</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">Text Mining</div>
+    <div class="quarto-category">Sentiment Analysis</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    A Sentiment Analysis of News Media Coverage on Joe Biden and Donald Trump
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Yiyang Shi, Cecelia Kaufmann, Tam Nguyen </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 1, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction-and-backgrounds" class="level1">
+<h1>Introduction and Backgrounds</h1>
+<section id="introduction-to-our-project" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-our-project">Introduction to Our Project</h2>
+<p>Our project aims to explore the connection between how the two main candidates in the 2020 U.S. presidential election, Joe Biden and Donald Trump were portrayed in the media via sentiment analysis. To do this, we used the AFINN lexicon to longitudinally explore trends over the span of 2 years, from 2020 to 2022 to see there were connections between specific events in the world or in the candidates lives and how the media portrayed the candidates. To explore this further, we picked a news source from within the United States, the New York Times and one from the U.K., the Guardian, to see if the trends differ domestically versus internationally.</p>
+</section>
+<section id="research-questions" class="level2">
+<h2 class="anchored" data-anchor-id="research-questions">Research Questions</h2>
+<p>How do the sentiments between Donald Trump and Joe Biden vary between New York Times and Guardian articles before and after the 2020 U.S. Presidential election?</p>
+<p>How many NYT articles about Trump/Biden are positive/negative? How many positive and negative articles for Trump/Biden for The Guardian? Is there a difference in the article percentages between the New York Times and the Guardian?</p>
+<p>Can we correlate sentiments to significant events for both candidates?</p>
+</section>
+<section id="motivations-to-our-research-questions" class="level2">
+<h2 class="anchored" data-anchor-id="motivations-to-our-research-questions">Motivations to Our Research Questions</h2>
+<p>We decided to use sentiment analysis to approach our analysis of the articles and article text. Through our discussions, we found that sentiment analysis will help to gain a deeper understanding of how newspapers portray the two leading candidates for the U.S. 2020 election and how that changed over the span of two years. Before we can get into our data collection process and analysis of articles, it is important we define key terms and packages that we used to be able to analyze our data in a concise manner.</p>
+</section>
+<section id="about-sentiment-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="about-sentiment-analysis">About Sentiment Analysis</h2>
+<p>Sentiment analysis, which is also sometimes referred to as opinion mining is a way to use natural language processing (NLP) to identify the emotional tone behind a body of text. Through different types of lexicons, a word or string of words can be identified as positive, negative, or neutral.</p>
+</section>
+<section id="lexicons-and-the-afinn-lexicon" class="level2">
+<h2 class="anchored" data-anchor-id="lexicons-and-the-afinn-lexicon">Lexicons and the “AFINN” lexicon</h2>
+<p>For lexicon-based sentiment analysis, which we used for this research, words in the text are labeled as positive or negative with the help of a valence dictionary. For this research, we used the AFINN lexicon, which assigns words with a score between -5 and 5, with a more negative score indicating a more negative word and vice versa. We felt for this research that a weighted lexicon dictionary would make the most sense, especially since we are comparing over time and a lot of words. One thing to note about the AFINN lexicon is many of the words that are ranked the most negative (-5) are words that have profanities or are extremely offensive. Although some of these words are featured as quotes in articles we pulled, we decided against including them in our visualizations, filtering them out when needed.</p>
+</section>
+<section id="stop-words" class="level2">
+<h2 class="anchored" data-anchor-id="stop-words">Stop Words</h2>
+<p>We also used a stop_words library in our data analysis. The stop_words library removed common words like “if”, “but”, “we”, “of”, and “they”. Firstly, removing these words do not change the over all semantics of the text one is analyzing and secondly, doing this can sometimes improve the performance of the model. We also created our own list of stop words, which we included names of candidates and other common words not removed from the stop_words library (like “here’s”, “it’s”, and “jr”) because they are common words that would affect our sentiment analysis but removed would not affect the overall meaning.</p>
+</section>
+<section id="stemming-and-the-snowballc-package-porter-algorithm" class="level2">
+<h2 class="anchored" data-anchor-id="stemming-and-the-snowballc-package-porter-algorithm">Stemming and the SnowballC package (Porter Algorithm)</h2>
+<p>We also utilized a stemming algorithm (Porter’s Algorithm) to reduce the number of words we are analyzing without minimizing the analysis. With the SnowballC package, we can reduce the words to their base or root form. For example, “ran” and “running” would just be reduced to the stem “run”. This streamlines the process of sentiment analysis.</p>
+</section>
+</section>
+<section id="about-our-datasets" class="level1">
+<h1>About our Datasets</h1>
+<p>Here is a breakdown of all the datasets we are using: Our datasets are as follows: New York Times: Keyword: “trump”, Dates: January 1st, 2020 through January 1st, 2022 Keyword: “biden”, Dates: January 1st, 2020 through January 1st, 2022</p>
+<p>Guardian: New York Times: Keyword: “trump”, Dates: January 1st, 2020 through January 1st, 2022 Keyword: “biden”, Dates: January 1st, 2020 through January 1st, 2022</p>
+<p>NOTE: To load our data sets, one will need to download the data set file and then one will be able to run the code from their own device. In the loading area, where this is the “~/” this indicates that one needs to put in their own path to the data file for the file to properly load.</p>
+<p>For both NYT and Guardian, we originally pulled the metadata which included about 20 variables, most notably the headline, url, date published, and section name. After we pulled the metadata information, we pulled the text for all the articles. This was an incredibly time consuming process, taking basically up until the second to last week of the semester to get all of our data together to make visualizations that show a full picture of our research question. We had to write code that would pull multiple API’s and loop through the data, which took up to 6 hours on one computer to pull all the data. To understand the scale, we estimate in total we have information for about 30,000 to 40,000 articles in total between the New York Times and the Guardian. Because of the nature of the data (using API’s and webscraping), we are the ones who created the dataset!</p>
+<p>For both the New York Times and the Guardian, their data is open source if you sign up through their developer portal to get API keys, which are essentially passwords that allow you to interact with their data. Because of the sheer volume of the articles we had to pull, and concerns with overwhelming the pull requests (a security measure in place specifically for the NYT), we constructed code to loop through a number of different API’s that would then pull this metadata. The code itself was constructed based on the status code that produced by each pull request. For example, “200” status code means the pull request was successful. In this case, we keep pulling with the same API key. “429” status code means the daily limit reached for the current API key. In this situation, we pause 3 minutes and iterate to the next API key registered by a different email address. After doing that, we wanted to expand the amount of text available to analyze, so we used a CSS selector to webscrape the article text data from each article for each candidate from each newspaper. Guardian has a different way of stopping developers who do not have membership to pull too many articles. Instead of setting a daily limit for each API key like NYT, Guardian iterates a series of CSS selectors on their webpage, so it’s time-consuming to locate each of the CSS selector and pull every article.</p>
+<p>Once we did that, we had to standardize the text, so we had to do a lot of cleaning of the data to remove the punctuations from the text and format all the text so it is lowercase. From there, we unnested the tokens (or the words) from the text we had, so we can later use the AFINN lexicon to analyze the text on a word by word level. We then used the anti_join function to return only the words that do not show up in our standard stop_words and our personal stopwords (mystopwords) lists. Lastly, we created a variable called stem which as described earlier performing the stemming algorithm so we only have root words.</p>
+<p>For performing time series analysis, we needed to eventually merge our two data sets for the different time periods for each candidate into one data set which would then give one cohesive data set from 2020 to 2022 for each of the candidates for each of the news sources, or four very long data sets.</p>
+<p>One thing to note about the data sets we use in our analysis, The New York Times and The Guardian. Initially, we wanted to identify four news sources that spanned across the political spectrum (in U.S. politic terms, from left to right). Unfortunately, in our initial research and given the scope of the project, we were only able to get access to free and “easily” available. On the domestic level, that ended up being the New York Times which is a left leaning newspaper. On the international level, it ended up being the Guardian, which is also a left leaning paper out of the U.K. Therefore, we can assume there may be some bias in our data because of the news sources’ political alignments– Trump would be portrayed in a more negative light compared to Biden.</p>
+</section>
+<section id="data-cleaning-for-new-york-times-biden-and-trump" class="level1">
+<h1>Data cleaning for New York Times (Biden and Trump)</h1>
+<p>Below is the code that was described above that will clean the data for the Joe Biden and Donald Trump data sets for the New York Times. We first left join “biden_nytimes” with “biden_nytimes_text” that has article text data by “url”. We also remove all the punctuation and null text cells and name the data set “biden_nytimes_untoken” since the data set is one article per row. We then unnest the tokens to expand the data set to be one token/word per row and name it “biden_nytimes_token”. We exclude the meaningless words like “if”, “but”, “we”, etc, by using “anti_join”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"/Users/yiyangshi/Desktop/SPRING 2023/STAT 456/Project/Articles Data/unclean/biden_nytimes.RData"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"/Users/yiyangshi/Desktop/SPRING 2023/STAT 456/Project/Articles Data/unclean/biden_nytimes_text.RData"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>biden_nytimes_untoken <span class="ot">&lt;-</span> biden_nytimes <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">url =</span> web_url) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(biden_nytimes_text, <span class="at">by =</span> <span class="st">"url"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(url, text, pub_date, section_name) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_remove_all</span>(text, <span class="st">"[:punct:]"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(text <span class="sc">!=</span> <span class="st">""</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(biden_nytimes_untoken)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  url                                                      text  pub_d…¹ secti…²
+  &lt;chr&gt;                                                    &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  
+1 https://www.nytimes.com/2020/12/31/us/politics/justice-… Here… 2021-0… U.S.   
+2 https://www.nytimes.com/2020/12/31/opinion/2021-economy… The … 2021-0… Opinion
+3 https://www.nytimes.com/2021/01/01/opinion/native-ameri… In t… 2021-0… Opinion
+4 https://www.nytimes.com/2021/01/01/world/asia/afghanist… KABU… 2021-0… World  
+5 https://www.nytimes.com/2021/01/01/opinion/how-2020-cha… List… 2021-0… Opinion
+6 https://www.nytimes.com/2021/01/01/climate/trump-nation… The … 2021-0… Climate
+# … with abbreviated variable names ¹​pub_date, ²​section_name</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>biden_nytimes_token <span class="ot">&lt;-</span> biden_nytimes_untoken <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(stop_words) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(mystopwords) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stem =</span> <span class="fu">wordStem</span>(word))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(biden_nytimes_token)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  url                                                pub_d…¹ secti…² word  stem 
+  &lt;chr&gt;                                              &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;
+1 https://www.nytimes.com/2020/12/31/us/politics/ju… 2021-0… U.S.    heres here 
+2 https://www.nytimes.com/2020/12/31/us/politics/ju… 2021-0… U.S.    pres… pres…
+3 https://www.nytimes.com/2020/12/31/us/politics/ju… 2021-0… U.S.    jrs   jr   
+4 https://www.nytimes.com/2020/12/31/us/politics/ju… 2021-0… U.S.    inau… inau…
+5 https://www.nytimes.com/2020/12/31/us/politics/ju… 2021-0… U.S.    day   dai  
+6 https://www.nytimes.com/2020/12/31/us/politics/ju… 2021-0… U.S.    just… just…
+# … with abbreviated variable names ¹​pub_date, ²​section_name</code></pre>
+</div>
+</div>
+<p>We did the exact same cleaning process for Trump NYTimes, Trump Guardian, and Biden Guardian. To bypass the original data cleaning shown above, there are also the RData files below that have tokenized and untokenized data for each candidate and each media.</p>
+<div class="cell">
+
+</div>
+</section>
+<section id="visualizations-and-discussion" class="level1">
+<h1>Visualizations and Discussion</h1>
+<section id="new-york-times" class="level2">
+<h2 class="anchored" data-anchor-id="new-york-times">New York Times</h2>
+<section id="biden-new-york-times" class="level3">
+<h3 class="anchored" data-anchor-id="biden-new-york-times">Biden New York Times</h3>
+<p>Now that we have the data sets, we can take a look at the trends. First we will construct a time series graph, where we calculate the day score for the articles over one day. Not the green line is U.S. Election Day 2020 or November 4th, 2020.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As we can see from this graph, the sentiment score for Biden trends negative, with it beginning positively as the beginning of 2020 and then decreasing throughout the year, but remaining pretty consistent throughout the rest of the timeline. There isn’t much of a shift after the election (indicated by the green line), or even after January 6th or the inauguration on January 20th, 2021.</p>
+<p>Although this graph shows trends, it is worth taking a look at the specific days where there are the highest peaks and lowest dips. What was going on those days?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 15 × 2
+   date       day_score
+   &lt;date&gt;         &lt;dbl&gt;
+ 1 2020-02-23     0.845
+ 2 2020-02-22     0.754
+ 3 2020-12-25     0.737
+ 4 2020-03-08     0.675
+ 5 2020-03-04     0.655
+ 6 2020-02-12     0.654
+ 7 2020-01-11     0.632
+ 8 2020-01-06     0.629
+ 9 2020-02-16     0.598
+10 2020-02-19     0.591
+11 2020-03-03     0.581
+12 2020-02-11     0.568
+13 2020-11-04     0.535
+14 2020-03-02     0.516
+15 2020-03-01     0.509</code></pre>
+</div>
+</div>
+<p>Let’s look at what was going on a few of the days that recieved the highest day score:</p>
+<p>February 23rd and 22nd 2020 were the days during this time period where articles were most positive about Joe Biden. Although there doesn’t seem to be a specific event to indicate why, Bernie Sanders, another Democratic challenger in the primary had won Nevada and Biden had just given a positively received interview on Face the Nation, a news program.</p>
+<p>December 25th, 2020 is Christmas 2020. This could just indicate positive emotions because of a holiday.</p>
+<p>March 8th, 2020 is the day now Vice President Kamala Harris endorsed Joe Biden for President of the United States</p>
+<p>Now, lets look at the days that recieved the worst scores for Joe Biden</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  date       day_score
+  &lt;date&gt;         &lt;dbl&gt;
+1 2020-06-07     -1.08</code></pre>
+</div>
+</div>
+<p>Only one day received a day score below negative one. One June 2nd, during the height of the civil unrest in the U.S. Biden gave a speech that called for the end to the violence. On the 6th of June, CNN had projected that he secured enough delegates for the Democratic nomination for president.</p>
+<p>To break this down further, it is worth looking at the percentage of positive and negative articles for Joe Biden, both overall and by month</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  isPositive     n totalArt percent
+  &lt;lgl&gt;      &lt;int&gt;    &lt;int&gt;   &lt;dbl&gt;
+1 FALSE      10253    17343   0.591
+2 TRUE        7090    17343   0.409</code></pre>
+</div>
+</div>
+<p>Overall, 7,090 articles or 40% of the articles for Joe Biden were ruled positive. 10,253 or 59% were ruled negative.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Here is a graph that shows the percentage breakdown by month, with 2020 at the bottom and 2022 at the top. We can more clearly see where there are more negative articles than positive and how that can dynamically change over months.</p>
+</section>
+<section id="trump-new-york-times" class="level3">
+<h3 class="anchored" data-anchor-id="trump-new-york-times">Trump New York Times</h3>
+<p>Now that we have looked at the trends regarding Joe Biden, let’s do the same for Donald Trump</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>If we look at the overall trends of the graph, we can clearly see that besides a couple peaks in the graph, more or less the trend for sentiments for Trump articles is negative. Interestingly, there seems to be more variance as well as more positive days for Trump after the election (indicated by the green line). It’s a bit difficult to pinpoint the reason why but we can see that regardless of the broader variance post election, the general trend for the sentiment is overwhelmingly negative.</p>
+<p>Although this graph shows trends, it is worth taking a look at the specific days where there are the highest peaks and lowest dips. What was going on those days?</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 2
+  date       day_score
+  &lt;date&gt;         &lt;dbl&gt;
+1 2021-11-07     1.11 
+2 2020-12-25     1.10 
+3 2021-10-31     0.995
+4 2021-07-10     0.857
+5 2021-06-10     0.647
+6 2021-05-26     0.547
+7 2021-03-09     0.505</code></pre>
+</div>
+</div>
+<p>As we can see, there are only a few positive days. Let’s look at the events that were going on around the top three scoring dates</p>
+<p>November 7th, 2021: Post election 2021 where there was discussion in paper about Trump conservatism wins. December 25th, 2020: Christmas in the United States, potentially more positive sentiments because of the holiday. October 31st, 2021: Trump allies are at a confrence about Saudi Arabian Investments.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11 × 2
+   date       day_score
+   &lt;date&gt;         &lt;dbl&gt;
+ 1 2021-10-23     -1.44
+ 2 2021-10-10     -1.33
+ 3 2021-11-17     -1.29
+ 4 2021-04-11     -1.27
+ 5 2021-11-18     -1.21
+ 6 2021-05-30     -1.18
+ 7 2021-08-10     -1.16
+ 8 2021-12-22     -1.10
+ 9 2021-08-27     -1.1 
+10 2020-12-26     -1.06
+11 2021-12-20     -1.04</code></pre>
+</div>
+</div>
+<p>Let’s look at the top three worst scoring days: October 23rd, 2021: No specific events relating to Trump October 10th, 2021: Congressional races ahead of election shed Trump in a negative light. November 17th, 2021: Donald Trump seeks to block the January 6th investigations committee from moving forward.</p>
+<p>Now let’s look at the percentage breakdown by month for Trump:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  isPositive     n totalArt percent
+  &lt;lgl&gt;      &lt;int&gt;    &lt;int&gt;   &lt;dbl&gt;
+1 FALSE       6923    10162   0.681
+2 TRUE        3239    10162   0.319</code></pre>
+</div>
+</div>
+<p>Out of the 10162 articles with the keyword “trump” from the New York Times, 6,923 or 68% were negative. 3,239 or almost 32% were positive. Let’s break this down by month.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now we can see the trends by month, were some months there are many more negative articles than positive, and other months were it is a bit more balanced. One thing to note, in January 2021 many of the articles are negative, which would show connection between the January 6th insurrection of the nations capital by Trump supporters and the how the New York Times wrote about Trump during the month.</p>
+</section>
+<section id="new-york-times-conclusions" class="level3">
+<h3 class="anchored" data-anchor-id="new-york-times-conclusions">New York Times Conclusions</h3>
+<p>Here is both of the time series graphs for Donald Trump and Joe Biden shown earlier put together:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>In the New York Times between 2020 and 2022, articles written about Joe Biden were more positive than articles written about Donald Trump. In this time period, 40% of articles with the keyword “biden” were positive, compared to articles with the keyword “trump” at 31%. In general, many more days were negative (with a sentiment score value less than 1) for Trump compared to Biden and interestingly enough, for both candidates, their most positive days were days not during their presidential term. For Biden, this was in early 2020 and for Trump this was in 2021 after he was out of office. Overall, we can conclude that the New York Times fairly negative about both candidates but more positive about Joe Biden than Donald Trump during this time period.</p>
+</section>
+</section>
+<section id="guardian" class="level2">
+<h2 class="anchored" data-anchor-id="guardian">Guardian</h2>
+<section id="biden-guardian" class="level3">
+<h3 class="anchored" data-anchor-id="biden-guardian">Biden Guardian</h3>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Similar to the time seriies graph of Biden NYT, the daily sentiment scores for Biden fluctuated greatly (most variance) before election day.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  date       day_score
+  &lt;date&gt;         &lt;dbl&gt;
+1 2020-02-23     0.877</code></pre>
+</div>
+</div>
+<p>Interestingly, Biden only has 1 day on which his sentiment scores were above 0.5. Let’s explore why this is the case.</p>
+<p>2020-02-23: After checking the articles regarding Biden, it turns out that the Democratic members like Bernie Sanders won the primary elections in several big states but Biden only finsished in 2nd or 3 place. We can say that positive articles that mention Biden do not necessarily speak directly to Biden himself, but may be his Democratic party colleagues.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  date       day_score
+  &lt;date&gt;         &lt;dbl&gt;
+1 2020-06-01     -1.30
+2 2021-09-11     -1.05
+3 2020-05-31     -1.01</code></pre>
+</div>
+</div>
+<p>2020-06-01: Protests against police brutality spread nationwide and caused a great deal of chaos. It makes sense that our sentiment analysis once again thought the overall negativity of the event was directed at Biden (because his name was mentioned) when it was Trump’s name that was mentioned more regularly throughout the article published on this date.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  isPositive     n totalArt percent
+  &lt;lgl&gt;      &lt;int&gt;    &lt;int&gt;   &lt;dbl&gt;
+1 FALSE       5160     6944   0.743
+2 TRUE        1784     6944   0.257</code></pre>
+</div>
+</div>
+<p>Overall, 74% of Guardian articles written about Biden are negative, compared to a 26% percent for postives.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>From this graph, it seems like Biden was more likely to be included in positive articles during the last months of the each year (Nov and Dec of 2020 and 2021 for example)</p>
+</section>
+<section id="trump-guardian" class="level3">
+<h3 class="anchored" data-anchor-id="trump-guardian">Trump Guardian</h3>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Unlike the same time series graph for the NYT, here the daily sentiment scores for Trump behaved wildly even before and after the election.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  date       day_score
+  &lt;date&gt;         &lt;dbl&gt;
+1 2021-12-25     0.553</code></pre>
+</div>
+</div>
+<p>2021-12-25: Christmas day. We hypothesized that because of this special occasion event, the negativity towards Trump was minimalized.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  date       day_score
+  &lt;date&gt;         &lt;dbl&gt;
+1 2021-08-13     -1.02
+2 2020-06-11     -1.00</code></pre>
+</div>
+</div>
+<p>2021-08-13: The majority of the Guardian published on this date was discussing the US decision to pull troops out of Afghanistan and because most of these articles quoted Trump and what he would have done otherwise, sentiment analysis did not catch this and his sentimore score hit rock bottom as a result.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  isPositive     n totalArt percent
+  &lt;lgl&gt;      &lt;int&gt;    &lt;int&gt;   &lt;dbl&gt;
+1 FALSE       8651    11459   0.755
+2 TRUE        2808    11459   0.245</code></pre>
+</div>
+</div>
+<p>Like the percentages for Biden Guardian, the numbers for Trump are relatively the same (74% negative and 26% positive)</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Based on this graph, there is an obvious dip for Trump during the months of March and especially April in 2020. Thinking back, it could be due to the months when Covid really took a toll on the US and Trump was criticized for his lack of action in preventing the spread of the virus.</p>
+</section>
+<section id="guardian-conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="guardian-conclusion">Guardian Conclusion</h3>
+<p>There are a great number of blue bars fell under 0.25 for both Biden and Trump of The Guardian, which further strengthens our hypothesis that the international newspaper has stronger negative feelings towards the presidential candidates.</p>
+<p>With regard to the international newspaper, the percentages are more or less the same for both candidates, with both Trump and Biden scoring a staggering 74% on the negative articles and around 26% on the positive ones. Those numbers tell us that the Guardian has a more unbiased view overall. Equivocally speaking, they hate Trump and Biden almost equally.</p>
+<p>One outstanding dateis the month of 2022-01 when no single positive articles were written about Trump for NYT. After a few Google searches it was one year after the capitol insurrection, Trump was formally accused of 4 crimes and members of congress agreed he should be barred from holding office ever again.</p>
+</section>
+</section>
+<section id="nyt-and-guardian-together" class="level2">
+<h2 class="anchored" data-anchor-id="nyt-and-guardian-together">NYT and Guardian together</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Overall, the Guardian has lower sentiment scores than the NYT. Moreover, it is worth noting that while the Guardian has a more unbiased opinion, they are more critical of each candidate compared to the NYT. That being said, both newspapers follow very similar trend lines for each of the candidates, showing that although the sentiment is lower for the international source, both papers do score based on event similarly.</p>
+</section>
+</section>
+<section id="unanswered-questions-and-limitations" class="level1">
+<h1>Unanswered Questions and Limitations</h1>
+<p>The process of sentiment analysis is extremely insightful for looking at candidates and how newspapers frame their articles about them. That being said, it’s difficult to make many conclusions beyond what is really seen reflected in the graphs. The furthest conclusions we can make are by looking at the graph trend, looking at the date(s), and then looking to see if the trend could correlate with the event that happened for the candidate that day.</p>
+<p>In terms of limitations, as mentioned earlier, we were only able to gain access to left leaning newspapers. It would have been interesting to compare more moderate or right leaning newspapers, given we would infer that these sources would “rate” Donald Trump higher than Joe Biden in terms of article scores.</p>
+<p>Another observation is that articles mentioned Trump/Biden are not always directed towards them. Rather, the word “Trump” or “Biden” might have been briefly mentioned in someone else’s sad/happy story. Sentiment analysis, unfortunately, was not able to capture this detail. Therefore, when doing sentiment analysis, it might be a better idea to look at the overarching trends. Furthermore, it is a good idea to come up with a more precise measure of sentiment score instead of relying solely on the mean.</p>
+</section>
+<section id="final-conclusions" class="level1">
+<h1>Final Conclusions</h1>
+<p>The domestic press (NYT) tends to dislike Trump more than they do Biden while the international newspaper (The Guardian) does not seem to favor anyone in particular.</p>
+<p>The Guardian is more inclined to give each candidate harsher criticisms compared to NYT (mean difference of 0.2 in the sentiment scores).</p>
+<p>As predicted, a sudden dip/peak in the trends for sentiment scores correlates with an occurrence of a political event (mostly negative) involving either Trump or Biden.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">© Yiyang Shi, 2023<br> All content licensed under <i class="bi-badge-cc"></i> <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">(CC BY-NC-SA 4.0)</a></div>   
+    <div class="nav-footer-right">Site built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>
